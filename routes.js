@@ -10,4 +10,8 @@ module.exports = function(app){
         .get(jsonku.userOne)
     app.route('/users/add')
         .post(jsonku.addUser)
+    app.route('/users/update')
+        .put(jsonku.updateUser)
+    app.route('/users/delete/:id')
+        .delete(jsonku.userDelete)
 }

@@ -20,9 +20,9 @@ exports.userAll = function (req, res) {
 }
 
 // Get One User
-exports.userOne = async function (req, res) {
+exports.userOne = function (req, res) {
     let id = req.params.id
-    await connection.query('SELECT * FROM mahasiswa WHERE id_mahasiswa=?', [id], function (err, rows, fields) {
+    connection.query('SELECT * FROM mahasiswa WHERE id_mahasiswa=?', [id], function (err, rows, fields) {
         if (err) {
             connection.log(err)
         } else {
@@ -32,13 +32,39 @@ exports.userOne = async function (req, res) {
 }
 
 // Post add User
-exports.addUser = async function(req, res){
+exports.addUser = function(req, res){
     let {nim, nama, jurusan} = req.body
+
     connection.query('INSERT INTO mahasiswa (nim,nama,jurusan) values(?,?,?)', [nim, nama, jurusan], function(err, rows, fields){
         if(err){
             connection.log(err)
         }else {
             response.ok('Succes add User', res)
+        }
+    })
+}
+
+// Update user
+exports.updateUser = function(req, res) {
+    let id = req.body.id_mahasiswa
+    let {nim, nama, jurusan} = req.body
+    connection.query('UPDATE mahasiswa SET nim=?, nama=?, jurusan=? WHERE id_mahasiswa=?', [nim,nama,jurusan,id], function(err, rows, fields) {
+        if(err) {
+            connection.log(err)
+        }else {
+            response.ok('User updated', res)
+        }
+    })
+}
+
+// Delete User
+exports.userDelete = function(req, res) {
+    let id = req.params.id
+    connection.query('DELETE FROM mahasiswa WHERE id_mahasiswa=?', [id], function(err, rows, fields) {
+        if(err){
+            connection.log(err)
+        }else {
+            response.ok('User deleted', res)
         }
     })
 }
